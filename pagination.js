@@ -14,11 +14,13 @@ Pagination.nextPage().nextPage(); // the ability to call chainable
 Pagination.goToPage(3); // current page must be set to 3 
 */
 
-let pagination = {
-  currentPage: 0,
-};
+let pagination = {};
 
 Object.defineProperties(pagination, {
+  _currentPage: {
+    value: 0,
+    writable: true,
+  },
   array: {
     value: [],
     writable: true,
@@ -38,12 +40,13 @@ Object.defineProperties(pagination, {
   },
   prevPage: {
     value: () => {
-      return (pagination.currentPage -= 1);
+      return (pagination._currentPage -= 1);
     },
   },
   nextPage: {
     value: () => {
-      return (pagination.currentPage += 1);
+      pagination._currentPage += 1;
+      return pagination;
     },
   },
   firstPage: {
@@ -53,17 +56,17 @@ Object.defineProperties(pagination, {
   },
   lastPage: {
     value: () => {
-      return pagination.array[pagination.currentPage.length - 1];
+      return pagination.array[pagination._currentPage.length - 1];
     },
   },
   goToPage: {
     value: (page) => {
-      return (pagination.currentPage = page);
+      return (pagination._currentPage = page);
     },
   },
   getPageItems: {
     value: () => {
-      return pagination.array[pagination.currentPage];
+      return pagination.array[pagination._currentPage];
     },
   },
 });
@@ -73,7 +76,7 @@ pagination.init(alphabetArray, 4);
 console.log(pagination.getPageItems()); // ["a", "b", "c", "d"]
 console.log(pagination.nextPage()); // add the current page by one
 console.log(pagination.getPageItems()); // ["e", "f", "g", "h"]
-console.log(pagination.nextPage()); // the ability to call chainable
+console.log(pagination.nextPage().nextPage()); // the ability to call chainable
 console.log(pagination.goToPage(3)); // current page must be set to 3
-console.log(pagination.currentPage); // 3
+console.log(pagination._currentPage); // 3
 console.log(pagination.getPageItems()); // ['m', 'n', 'o', 'p']
