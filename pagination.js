@@ -29,13 +29,15 @@ Object.defineProperties(pagination, {
   },
   init: {
     value: (pageItems, pageItemsCount) => {
+      const arr = pagination.array;
+
       for (let i = 0; i < pageItems.length; i++) {
         if (i % pageItemsCount === 0) {
-          pagination.array.push([]);
+          arr.push([]);
         }
-        pagination.array[pagination.array.length - 1].push(pageItems[i]);
+        arr[arr.length - 1].push(pageItems[i]);
       }
-      return pagination.array;
+      return arr;
     },
   },
   prevPage: {
